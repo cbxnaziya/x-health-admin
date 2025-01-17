@@ -13,7 +13,7 @@ import {
   } from "@material-tailwind/react";
   import { useEffect, useState } from "react";
   import { fetchHandler } from "@/utils/Api";
-  import { GET_ALL_USERS, UPDATE_USER, DELETE_USER, GET_ALL_CATEGORIES, UPDATE_CATEGORIES } from "@/utils/Endpoint";
+  import { GET_ALL_USERS, UPDATE_USER, DELETE_USER, GET_ALL_CATEGORIES, UPDATE_CATEGORIES, remove_CATEGORIES } from "@/utils/Endpoint";
   import toast from "react-hot-toast";
   import { useLoader } from "@/context/LoaderContext";
   import { formatTimestamp } from "@/utils/Functions";
@@ -96,10 +96,12 @@ import {
   
     const handleDelete = async () => {
       try {
+        console.log("selectedUser._id",selectedUser._id);
+        
         const response = await fetchHandler(
           // DELETE_USER,
-          UPDATE_CATEGORIES,
-          { user_id: selectedUser._id },
+          remove_CATEGORIES,
+          { category_id: selectedUser._id },
           true,
           setLoader,
           "DELETE"
