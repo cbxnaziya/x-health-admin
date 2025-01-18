@@ -358,6 +358,7 @@ export function Tables() {
     setOpenDelete(true);
   };
 
+  const placeholderImage = "/img/bruce-mars.jpeg"
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
@@ -402,9 +403,22 @@ export function Tables() {
             </thead>
             <tbody>
               {currentUsers.length > 0 ? (
-                currentUsers.map(({ _id, name, email, phone, createdAt }) => (
+                currentUsers.map(({ _id, name, email, phone, createdAt, profile_image }) => (
                   <tr key={_id}>
-                    <td className="py-3 px-5">{_id}</td>
+                    {/* <td className="py-3 px-5">{_id}</td> */}
+                    <td className="py-3 px-5">
+  <img 
+    src={profile_image || placeholderImage} 
+    alt="Profile Image" 
+    style={{
+      width: '40px', 
+      height: '40px', 
+      borderRadius: '50%', 
+      objectFit: 'cover'
+    }} 
+  />
+</td>
+
                     <td className="py-3 px-5">
                       <div className="flex items-center gap-4">
                         <div>
