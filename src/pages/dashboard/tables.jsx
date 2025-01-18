@@ -21,10 +21,14 @@
 // export function Tables() {
 //   const { setLoader } = useLoader();
 //   const [users, setUsers] = useState([]);
-//   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+//   const [searchQuery, setSearchQuery] = useState("");
 //   const [open, setOpen] = useState(false);
 //   const [openDelete, setOpenDelete] = useState(false);
 //   const [selectedUser, setSelectedUser] = useState(null);
+  
+//   // Pagination state
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [usersPerPage] = useState(5); // Adjust this to change the number of users per page
 
 //   // Fetch users data
 //   useEffect(() => {
@@ -41,10 +45,18 @@
 
 //   // Filter users based on search query
 //   const filteredUsers = users.filter((user) =>
-//     `${user.name} ${user.email} ${user.phone}`
+//     `${user.name} ${user.email} ${user.phone} ${user._id}`
 //       .toLowerCase()
 //       .includes(searchQuery.toLowerCase())
 //   );
+
+//   // Get current users for the current page
+//   const indexOfLastUser = currentPage * usersPerPage;
+//   const indexOfFirstUser = indexOfLastUser - usersPerPage;
+//   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+//   // Handle page change
+//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 //   const handleEdit = (user) => {
 //     setSelectedUser(user);
@@ -101,29 +113,29 @@
 //     setOpenDelete(true);
 //   };
 
+//   const placeholderImage = "/img/user.jpg"
 //   return (
 //     <div className="mt-12 mb-8 flex flex-col gap-12">
 //       <Card>
 //         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
 //           <div className="flex flex-col md:flex-row justify-between item-center">
-
-//           <Typography variant="h6" color="white">
-//             Users Table
-//           </Typography>
-//           <div className="flex items-center gap-2">
-//       <Typography variant="body2" color="white">
-//         Search:
-//       </Typography>
-//       <Input
-//         type="text"
-//         placeholder="Search"
-//         value={searchQuery}
-//         onChange={(e) => setSearchQuery(e.target.value)}
-//         className="text-white" // Make input text white
-//         style={{ backgroundColor: "#1f2937" }} // Optional: change background to dark for contrast
-//       />
-//     </div>
-//               </div>
+//             <Typography variant="h6" color="white">
+//               Users Table
+//             </Typography>
+//             <div className="flex items-center gap-2">
+//               <Typography variant="body2" color="white">
+//                 Search:
+//               </Typography>
+//               <Input
+//                 type="text"
+//                 placeholder="Search"
+//                 value={searchQuery}
+//                 onChange={(e) => setSearchQuery(e.target.value)}
+//                 className="text-white"
+//                 style={{ backgroundColor: "#1f2937" }}
+//               />
+//             </div>
+//           </div>
 //         </CardHeader>
 //         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
 //           <table className="w-full min-w-[640px] table-auto">
@@ -145,86 +157,121 @@
 //               </tr>
 //             </thead>
 //             <tbody>
-//               {filteredUsers.map(({ _id, name, email, phone, createdAt }) => (
-//                 <tr key={_id}>
-//                   <td className="py-3 px-5">{_id}</td>
-//                   <td className="py-3 px-5">
-//                     <div className="flex items-center gap-4">
-//                       <div>
-//                         <Typography className="font-semibold">{name}</Typography>
-//                         <Typography className="text-xs text-blue-gray-500">
-//                           {email}
-//                         </Typography>
+//               {currentUsers.length > 0 ? (
+//                 currentUsers.map(({ _id, name, email, phone, createdAt, profile_image }) => (
+//                   <tr key={_id}>
+//                     {/* <td className="py-3 px-5">{_id}</td> */}
+//                     <td className="py-3 px-5">
+//   <img 
+//     src={profile_image || placeholderImage} 
+//     alt="Profile Image" 
+//     style={{
+//       width: '40px', 
+//       height: '40px', 
+//       borderRadius: '50%', 
+//       objectFit: 'cover'
+//     }} 
+//   />
+// </td>
+
+//                     <td className="py-3 px-5">
+//                       <div className="flex items-center gap-4">
+//                         <div>
+//                           <Typography className="font-semibold">{name}</Typography>
+//                           <Typography className="text-xs text-blue-gray-500">
+//                             {email}
+//                           </Typography>
+//                         </div>
 //                       </div>
-//                     </div>
-//                   </td>
-//                   <td className="py-3 px-5">{phone}</td>
-//                   <td className="py-3 px-5">{formatTimestamp(createdAt)}</td>
-//                   <td className="py-3 px-5 flex gap-2">
-//                     <Button
-//                       size="sm"
-//                       onClick={() =>
-//                         handleEdit({ _id, name, email, phone, createdAt })
-//                       }
-//                     >
-//                       Edit
-//                     </Button>
-//                     <Button size="sm" color="red" onClick={() => confirmDelete(_id)}>
-//                       Delete
-//                     </Button>
+//                     </td>
+//                     <td className="py-3 px-5">{phone}</td>
+//                     <td className="py-3 px-5">{formatTimestamp(createdAt)}</td>
+//                     <td className="py-3 px-5 flex gap-2">
+//                       <Button
+//                         size="sm"
+//                         onClick={() =>
+//                           handleEdit({ _id, name, email, phone, createdAt })
+//                         }
+//                       >
+//                         Edit
+//                       </Button>
+//                       <Button size="sm" color="red" onClick={() => confirmDelete(_id)}>
+//                         Delete
+//                       </Button>
+//                     </td>
+//                   </tr>
+//                 ))
+//               ) : (
+//                 <tr>
+//                   <td colSpan="5" className="py-3 px-5 text-center">
+//                     No users found
 //                   </td>
 //                 </tr>
-//               ))}
+//               )}
 //             </tbody>
 //           </table>
 //         </CardBody>
 //       </Card>
 
-//            {/* Popup for editing user */}
-//        <Dialog open={open} handler={setOpen}>
-//          <DialogHeader>Edit User</DialogHeader>
-//          <form onSubmit={handleSubmit}>
-//            <DialogBody>
-//              <div className="flex flex-col gap-4">
-//                <Input
-//                  label="Name"
-//                  name="name"
-//                  value={selectedUser?.name || ""}
-//                  onChange={handleChange}
-//                  required
-//                />
-//                <Input
-//                  label="Email"
-//                  name="email"
-//                  value={selectedUser?.email || ""}
-//                  onChange={handleChange}
-//                  required
-//                />
-//                <Input
-//                  label="Phone"
-//                  name="phone"
-//                  value={selectedUser?.phone || ""}
-//                  onChange={handleChange}
-//                  required
-//                />
-//              </div>
-//            </DialogBody>
-//            <DialogFooter>
-//              <Button variant="text" onClick={() => setOpen(false)}>
-//                Cancel
-//              </Button>
-//              <Button type="submit" variant="gradient">
-//                Save
-//              </Button>
-//            </DialogFooter>
-//          </form>
-//        </Dialog>
+//       {/* Pagination */}
+//       <div className="flex justify-center items-center gap-2 mt-4">
+//         <Button
+//           disabled={currentPage === 1}
+//           onClick={() => paginate(currentPage - 1)}
+//         >
+//           Prev
+//         </Button>
+//         <Typography variant="body2">{`Page ${currentPage}`}</Typography>
+//         <Button
+//           disabled={currentPage === Math.ceil(filteredUsers.length / usersPerPage)}
+//           onClick={() => paginate(currentPage + 1)}
+//         >
+//           Next
+//         </Button>
+//       </div>
 
+//       {/* Popup for editing user */}
+//       <Dialog open={open} handler={setOpen}>
+//         <DialogHeader>Edit User</DialogHeader>
+//         <form onSubmit={handleSubmit}>
+//           <DialogBody>
+//             <div className="flex flex-col gap-4">
+//               <Input
+//                 label="Name"
+//                 name="name"
+//                 value={selectedUser?.name || ""}
+//                 onChange={handleChange}
+//                 required
+//               />
+//               <Input
+//                 label="Email"
+//                 name="email"
+//                 value={selectedUser?.email || ""}
+//                 onChange={handleChange}
+//                 required
+//               />
+//               <Input
+//                 label="Phone"
+//                 name="phone"
+//                 value={selectedUser?.phone || ""}
+//                 onChange={handleChange}
+//                 required
+//               />
+//             </div>
+//           </DialogBody>
+//           <DialogFooter>
+//             <Button variant="text" onClick={() => setOpen(false)}>
+//               Cancel
+//             </Button>
+//             <Button type="submit" variant="gradient">
+//               Save
+//             </Button>
+//           </DialogFooter>
+//         </form>
+//       </Dialog>
 
-
-
-//        {/* Delete Confirmation Popup */}
-//        <Dialog open={openDelete} handler={setOpenDelete}>
+//       {/* Delete Confirmation Popup */}
+//       <Dialog open={openDelete} handler={setOpenDelete}>
 //         <DialogHeader>Confirm Deletion</DialogHeader>
 //         <DialogBody>
 //           Are you sure you want to delete this user? This action cannot be undone.
@@ -243,7 +290,6 @@
 // }
 
 // export default Tables;
-
 import {
   Card,
   CardHeader,
@@ -270,10 +316,10 @@ export function Tables() {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5); // Adjust this to change the number of users per page
+  const [usersPerPage, setUsersPerPage] = useState(5); // Default number of users per page
 
   // Fetch users data
   useEffect(() => {
@@ -358,7 +404,8 @@ export function Tables() {
     setOpenDelete(true);
   };
 
-  const placeholderImage = "/img/bruce-mars.jpeg"
+  const placeholderImage = "/img/user.jpg";
+
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
@@ -405,27 +452,23 @@ export function Tables() {
               {currentUsers.length > 0 ? (
                 currentUsers.map(({ _id, name, email, phone, createdAt, profile_image }) => (
                   <tr key={_id}>
-                    {/* <td className="py-3 px-5">{_id}</td> */}
                     <td className="py-3 px-5">
-  <img 
-    src={profile_image || placeholderImage} 
-    alt="Profile Image" 
-    style={{
-      width: '40px', 
-      height: '40px', 
-      borderRadius: '50%', 
-      objectFit: 'cover'
-    }} 
-  />
-</td>
-
+                      <img
+                        src={profile_image || placeholderImage}
+                        alt="Profile Image"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </td>
                     <td className="py-3 px-5">
                       <div className="flex items-center gap-4">
                         <div>
                           <Typography className="font-semibold">{name}</Typography>
-                          <Typography className="text-xs text-blue-gray-500">
-                            {email}
-                          </Typography>
+                          <Typography className="text-xs text-blue-gray-500">{email}</Typography>
                         </div>
                       </div>
                     </td>
@@ -434,9 +477,7 @@ export function Tables() {
                     <td className="py-3 px-5 flex gap-2">
                       <Button
                         size="sm"
-                        onClick={() =>
-                          handleEdit({ _id, name, email, phone, createdAt })
-                        }
+                        onClick={() => handleEdit({ _id, name, email, phone, createdAt })}
                       >
                         Edit
                       </Button>
@@ -458,21 +499,39 @@ export function Tables() {
         </CardBody>
       </Card>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center gap-2 mt-4">
-        <Button
-          disabled={currentPage === 1}
-          onClick={() => paginate(currentPage - 1)}
-        >
-          Prev
-        </Button>
-        <Typography variant="body2">{`Page ${currentPage}`}</Typography>
-        <Button
-          disabled={currentPage === Math.ceil(filteredUsers.length / usersPerPage)}
-          onClick={() => paginate(currentPage + 1)}
-        >
-          Next
-        </Button>
+      {/* Pagination Row */}
+      <div className="flex justify-between items-center gap-4 mt-4">
+        {/* Users per page input */}
+        <div className="flex items-center ">
+          <Typography variant="body2" color="gray">
+            Users per page:
+          </Typography>
+          <Input
+            type="number"
+            value={usersPerPage}
+            onChange={(e) => setUsersPerPage(Number(e.target.value))}
+            min="1"
+            className="w-20 text-white"
+            style={{ backgroundColor: "#1f2937" }}
+          />
+        </div>
+
+        {/* Pagination buttons */}
+        <div className="flex items-center gap-2">
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => paginate(currentPage - 1)}
+          >
+            Prev
+          </Button>
+          <Typography variant="body2">{`Page ${currentPage}`}</Typography>
+          <Button
+            disabled={currentPage === Math.ceil(filteredUsers.length / usersPerPage)}
+            onClick={() => paginate(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
 
       {/* Popup for editing user */}
