@@ -32,16 +32,20 @@ export function Tables() {
   const [usersPerPage, setUsersPerPage] = useState(5); // Default number of users per page
 
   // Fetch users data
+  const getData = async () => {
+    try {
+      setLoader(true)
+      const response = await fetchHandler(GET_ALL_USERS, "", true, setLoader, "GET");
+      setUsers(response?.data?.users || []);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }finally{
+      setLoader(false)
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetchHandler(GET_ALL_USERS, "", true, setLoader, "GET");
-        setUsers(response?.data?.users || []);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    getData();
+    const timer = setTimeout(() => getData(), 0); // Delay API call
+    return () => clearTimeout(timer); // Cleanup timer
   }, []);
 
 

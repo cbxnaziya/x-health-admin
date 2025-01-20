@@ -271,18 +271,18 @@ export function SignIn() {
             Sign In
           </Button>
 
-          <div className="flex items-center justify-between gap-2 mt-6">
+          {/* <div className="flex items-center justify-between gap-2 mt-6">
             <Typography variant="small" className="font-medium text-gray-900">
               <a href="#">Forgot Password ?</a>
             </Typography>
-          </div>
+          </div> */}
 
-          <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
+          {/* <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">
               Create account
             </Link>
-          </Typography>
+          </Typography> */}
         </form>
       </div>
     </section>
