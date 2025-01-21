@@ -277,7 +277,7 @@ export function Categories() {
       onChange={(e) => setUsersPerPage(Number(e.target.value))}
       className="ml-2 p-2 border border-gray-300 rounded bg-gray-800 text-white"
     >
-      {[5, 10,].map((option) => (
+      {[10,  20, 30].map((option) => (
         <option key={option} value={option}>
           {option}
         </option>

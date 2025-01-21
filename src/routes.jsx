@@ -36,6 +36,12 @@ export const routes = [
         path: "/users",
         element: <Tables />,
       },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "User profile",
+        path: "/user-profile",
+        element: <Profile />,
+      },
       // {
       //   icon: <InformationCircleIcon {...icon} />,
       //   name: "notifications",
