@@ -38,7 +38,7 @@ export function Profile() {
   // Fetch user data
   const getData = async () => {
     try {
-      const response = await fetchHandler(GET_USER, "", true, setLoader, "GET");
+      const response = await fetchHandler(GET_USER, "", false, setLoader, "GET");
       setAdminData(response?.data?.user || []);
     } catch (error) {
       console.error("Error fetching users:", error);

@@ -75,9 +75,8 @@ export const fetchHandler = async (url, data, loader, setLoader, method) => {
 
   try {
     if (loader) {
-      setLoader(true); // Show loader
+      // setLoader(true); // Show loader
     }
-
     // Dynamically call the HTTP method (POST, GET, PUT, DELETE, etc.)
     const response = await service[method.toLowerCase()](
       url,

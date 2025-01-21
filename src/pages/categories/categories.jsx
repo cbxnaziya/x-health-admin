@@ -38,7 +38,7 @@ export function Categories() {
   // Fetch users data
   const getData = async () => {
     try {
-      const response = await fetchHandler(GET_ALL_CATEGORIES, "", true, setLoader, "GET");
+      const response = await fetchHandler(GET_ALL_CATEGORIES, "", false, setLoader, "GET");
       console.log("res", response.data);
       
       setUsers(response?.data?.data || []);

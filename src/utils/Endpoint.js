@@ -8,3 +8,4 @@ export const GET_ALL_CATEGORIES = "/api/categories";
 export const ADD_CATEGORIES = "/api/categories/add"; 
 export const UPDATE_CATEGORIES = "/api/categories/update"; 
 export const REMOVE_CATEGORIES = "/api/categories/remove"; 
+export const GET_ALL_USERS_PROFILE = "/api/profiles"; 

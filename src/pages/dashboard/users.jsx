@@ -34,18 +34,16 @@ export function Tables() {
   // Fetch users data
   const getData = async () => {
     try {
-      setLoader(true)
-      const response = await fetchHandler(GET_ALL_USERS, "", true, setLoader, "GET");
+      const response = await fetchHandler(GET_ALL_USERS, "", false, setLoader, "GET");
       setUsers(response?.data?.users || []);
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
-      setLoader(false)
+    
     }
   };
   useEffect(() => {
-    const timer = setTimeout(() => getData(), 0); // Delay API call
-    return () => clearTimeout(timer); // Cleanup timer
+    getData();
   }, []);
 
 
