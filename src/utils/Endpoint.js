@@ -11,3 +11,5 @@ export const REMOVE_CATEGORIES = "/api/categories/remove";
 export const GET_ALL_USERS_PROFILE = "/api/profiles"; 
 export const USER_PROFILES_UPDATE = "/api/profiles/update"; 
 export const USER_PROFILES_REMOVE = "/api/profiles/remove"; 
+export const GET_PROFILE_QUESTIONS = "/api/profiles-questions"; 
+export const GET_CONTENTS = "/api/contents"; 
