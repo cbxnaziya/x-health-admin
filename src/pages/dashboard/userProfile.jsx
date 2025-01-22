@@ -12,7 +12,7 @@ import {
   } from "@material-tailwind/react";
   import { useEffect, useState } from "react";
   import { fetchHandler } from "@/utils/Api";
-  import {  UPDATE_USER, DELETE_USER,  GET_ALL_USERS_PROFILE } from "@/utils/Endpoint";
+  import {  UPDATE_USER, DELETE_USER,  GET_ALL_USERS_PROFILE, USER_PROFILES_UPDATE, USER_PROFILES_REMOVE } from "@/utils/Endpoint";
   import toast from "react-hot-toast";
   import { useLoader } from "@/context/LoaderContext";
   import { formatTimestamp } from "@/utils/Functions";
@@ -49,7 +49,7 @@ import axios from "axios";
   
   
     const filteredUsers = users.filter((user) =>
-      `${user.name} ${user.email} ${user.phone} ${user._id}`
+      `${user.nickname} ${user.mood} ${user.emotion} ${user._id}  ${user.feeling} ${user.goal} ${user.experience}  ${user.trauma} ${user.religion} ${user.religious}`
         .toLowerCase()
         .includes(searchQuery.toLowerCase().trim())
     );
@@ -78,10 +78,10 @@ import axios from "axios";
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const { name, email, phone, gender, preferred_language } = selectedUser;
+        const { name, email, phone, gender, preferred_language ,nickname,mood ,emotion,feeling,goal,experience,trauma,religion,religious} = selectedUser;
         const response = await fetchHandler(
-          UPDATE_USER,
-          { id: selectedUser._id, name, email, phone },
+          USER_PROFILES_UPDATE,
+          { id: selectedUser._id ,nickname,mood ,emotion,feeling,goal,experience,trauma,religion,religious},
           true,
           setLoader,
           "PUT"
@@ -105,8 +105,8 @@ import axios from "axios";
     const handleDelete = async () => {
       try {
         const response = await fetchHandler(
-          DELETE_USER,
-          { user_id: selectedUser._id },
+          USER_PROFILES_REMOVE,
+          { profile_id: selectedUser._id },
           true,
           setLoader,
           "DELETE"

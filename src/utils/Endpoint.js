@@ -9,3 +9,5 @@ export const ADD_CATEGORIES = "/api/categories/add";
 export const UPDATE_CATEGORIES = "/api/categories/update"; 
 export const REMOVE_CATEGORIES = "/api/categories/remove"; 
 export const GET_ALL_USERS_PROFILE = "/api/profiles"; 
+export const USER_PROFILES_UPDATE = "/api/profiles/update"; 
+export const USER_PROFILES_REMOVE = "/api/profiles/remove"; 

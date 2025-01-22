@@ -51,7 +51,7 @@ export function Categories() {
   }, []);
 
   const filteredUsers = users.filter((user) =>
-    `${user?.name} ${user?.email} ${user?.phone} ${user?._id}`
+    `${user?.name} ${user?.email} ${user?.phone} ${user?._id} ${user?.status}`
       .toLowerCase()
       .includes(searchQuery.toLowerCase().trim())
   );
