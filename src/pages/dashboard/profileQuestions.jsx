@@ -1,428 +1,4 @@
-// import {
-//     Card,
-//     CardHeader,
-//     CardBody,
-//     Typography,
-//     Dialog,
-//     DialogHeader,
-//     DialogBody,
-//     DialogFooter,
-//     Button,
-//     Input,
-//   } from "@material-tailwind/react";
-//   import { useEffect, useState } from "react";
-//   import { fetchHandler } from "@/utils/Api";
-//   import { GET_ALL_USERS, UPDATE_USER, DELETE_USER, GET_ALL_CATEGORIES, UPDATE_CATEGORIES, REMOVE_CATEGORIES, ADD_CATEGORIES, GET_PROFILE_QUESTIONS } from "@/utils/Endpoint";
-//   import toast from "react-hot-toast";
-//   import { useLoader } from "@/context/LoaderContext";
-//   import { formatTimestamp } from "@/utils/Functions";
-  
-//   export function ProfileQuestions() {
-//     const { setLoader } = useLoader();
-//     const [users, setUsers] = useState([]);
-//     const [searchQuery, setSearchQuery] = useState("");
-//     const [open, setOpen] = useState(false);
-//     const [openDelete, setOpenDelete] = useState(false);
-//     const [selectedUser, setSelectedUser] = useState(null);
-//     const [openAdd, setOpenAdd] = useState(false); 
-//      const [newCategory, setNewCategory] = useState({
-//       name: "",
-//       status: "active", // Default status
-//     });
-  
-//     // Pagination state
-//     const [currentPage, setCurrentPage] = useState(1);
-//     const [usersPerPage, setUsersPerPage] = useState(10); // Default 10 items per page
-    
-  
-//     // Fetch users data
-//     const getData = async () => {
-//       try {
-//         const response = await fetchHandler(GET_PROFILE_QUESTIONS, "", false, setLoader, "GET");
-//         console.log("res", response.data);
-        
-//         setUsers(response?.data?.data || []);
-//       } catch (error) {
-//         console.error("Error fetching users:", error);
-//       }
-//     };
-//     useEffect(() => {
-//       getData();
-//     }, []);
-  
-//     const filteredUsers = users.filter((user) =>
-//       `${user?.name} ${user?.email} ${user?.phone} ${user?._id} ${user?.status}`
-//         .toLowerCase()
-//         .includes(searchQuery.toLowerCase().trim())
-//     );
-    
-//     // Adjust current page if the filtered list is smaller
-//     useEffect(() => {
-//       if (currentPage > Math.ceil(filteredUsers.length / usersPerPage)) {
-//         setCurrentPage(1);
-//       }
-//     }, [filteredUsers.length, currentPage, usersPerPage]);
-    
-//     // Paginate filtered users
-//     const indexOfLastUser = currentPage * usersPerPage;
-//     const indexOfFirstUser = indexOfLastUser - usersPerPage;
-//     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-    
-    
-//     // Handle page change
-//     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  
-//     const handleEdit = (user) => {
-//       setSelectedUser(user);
-//       setOpen(true);
-//     };
-  
-//     const handleSubmit = async (e) => {
-//       e.preventDefault();
-//       try {
-//         const { name, status } = selectedUser;
-//         const response = await fetchHandler(
-//           UPDATE_CATEGORIES,
-//           { id: selectedUser._id, status,name },
-//           true,
-//           setLoader,
-//           "PUT"
-//         );
-//         toast.success(response.data.message);
-//         setUsers((prev) =>
-//           prev.map((user) => (user._id === selectedUser._id ? selectedUser : user))
-//         );
-//       } catch (error) {
-//         console.error("Error updating user:", error);
-//         toast.error("Failed to update user. Please try again.");
-//       } finally {
-//         setOpen(false);
-//       }
-//     };
-  
-//     const handleChange = (e) => {
-//       const { name, value } = e.target;
-//       setSelectedUser((prev) => ({ ...prev, [name]: value }));
-//     };
-  
-//     const handleDelete = async () => {
-//       try {
-    
-        
-//         const response = await fetchHandler(
-//           REMOVE_CATEGORIES,
-//           { category_id: selectedUser._id },
-//           true,
-//           setLoader,
-//           "DELETE"
-//         );
-//         toast.success(response.data.message);
-//         setUsers((prev) => prev.filter((user) => user._id !== selectedUser._id));
-//       } catch (error) {
-//         console.error("Error deleting user:", error);
-//         toast.error("Failed to delete user. Please try again.");
-//       } finally {
-//         setOpenDelete(false);
-//       }
-//     };
-  
-//     const confirmDelete = (userId) => {
-//       setSelectedUser({ _id: userId });
-//       setOpenDelete(true);
-//     };
-  
-//     // const handleAddCategory = async () => {
-//     //   try {
-//     //     const response = await fetchHandler(ADD_CATEGORIES, newCategory, true, setLoader, "POST");
-//     //     toast.success(response.data.message);
-//     //     setUsers((prev) => [...prev, response.data.data]); // Add new category to the list
-//     //     setOpenAdd(false); // Close the dialog
-//     //   } catch (error) {
-//     //     console.error("Error adding category:", error);
-//     //     toast.error("Failed to add category. Please try again.");
-//     //   }
-//     // };
-  
-//     const handleAddCategory = async () => {
-//       try {
-//         setLoader(true); // Show loader while API call is in progress
-//         const response = await fetchHandler(ADD_CATEGORIES, newCategory, true, setLoader, "POST");
-  
-//     toast.success(response?.data?.message);
-//     if (response?.data?.status) {
-//       setNewCategory({   
-//         name: "",
-//         status: "active", })
-//       getData();
-//       // setUsers((prev) => [...prev, response.data]);
-//     } 
-  
-//       } catch (error) {
-//         console.error("Error adding category:", error);
-//         toast.error("Failed to add category. Please try again.");
-//       } finally {
-//         setOpenAdd(false); // Close the dialog
-//         setLoader(false); // Hide loader after API call is complete
-//       }
-//     };
-    
-//     const handleAddCategoryInput = (e) => {
-//       const { name, value } = e.target;
-//       setNewCategory((prev) => ({ ...prev, [name]: value }));
-//     };
-    
-    
-  
-//     return (
-//       <div className="mt-12 mb-8 flex flex-col gap-12">
-//         <Card>
-//         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-//     <div className="flex flex-col md:flex-row justify-between items-center">
-//       <Typography variant="h6" color="white">
-//       Profile Questions Table
-//       </Typography>
-//       <div className="flex items-center gap-2">
-//         <Typography variant="body2" color="white">
-//           Search:
-//         </Typography>
-//         <Input
-//           type="text"
-//           placeholder="Search"
-//           value={searchQuery}
-//           onChange={(e) => setSearchQuery(e.target.value)}
-//           className="text-white"
-//           style={{ backgroundColor: "#1f2937" }}
-//         />
-//         {/* Add Category Button */}
-//         <Button
-//           size="sm"
-//           color="green"
-//           className="ml-4"
-//           onClick={() => setOpenAdd(true)} 
-//         >
-//          + Add Category
-//         </Button>
-//       </div>
-//     </div>
-//   </CardHeader>
-  
-//           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-//             <table className="w-full min-w-[640px] table-auto">
-//               <thead>
-//                 <tr>
-//                   {["Category ID", "Name", "Status", "Created", "Actions"].map((el) => (
-//                     <th
-//                       key={el}
-//                       className="border-b border-blue-gray-50 py-3 px-5 text-left"
-//                     >
-//                       <Typography
-//                         variant="small"
-//                         className="text-[11px] font-bold uppercase text-blue-gray-400"
-//                       >
-//                         {el}
-//                       </Typography>
-//                     </th>
-//                   ))}
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {currentUsers?.length > 0 ? (
-//                   currentUsers?.map(({ _id, name, status, phone, createdAt }) => (
-//                     <tr key={_id}>
-//                       <td className="py-3 px-5">{_id}</td>
-//                       <td className="py-3 px-5">
-//                         <div className="flex items-center gap-4">
-//                           <div>
-//                             <Typography className="font-semibold">{name}</Typography>
-//                           </div>
-//                         </div>
-//                       </td>
-//                       <td className="py-3 px-5">{status}</td>
-//                       <td className="py-3 px-5">{formatTimestamp(createdAt)}</td>
-//                       <td className="py-3 px-5 flex gap-2">
-//                         <Button
-//                           size="sm"
-//                           onClick={() =>
-//                             handleEdit({ _id, name, phone, status, createdAt })
-//                           }
-//                         >
-//                           Edit
-//                         </Button>
-//                         <Button size="sm" color="red" onClick={() => confirmDelete(_id)}>
-//                           Delete
-//                         </Button>
-//                       </td>
-//                     </tr>
-//                   ))
-//                 ) : (
-//                   <tr>
-//                     <td colSpan="5" className="py-3 px-5 text-center">
-//                       No users found
-//                     </td>
-//                   </tr>
-//                 )}
-//               </tbody>
-//             </table>
-//           </CardBody>
-//         </Card>
-  
-//         <div className="flex justify-between items-center gap-4 mt-4">
-//     {/* Users per page dropdown */}
-//     <div className="flex items-center">
-//       <Typography variant="body2" color="gray">
-//         Users per page:
-//       </Typography>
-//       <select
-//         value={usersPerPage}
-//         onChange={(e) => setUsersPerPage(Number(e.target.value))}
-//         className="ml-2 p-2 border border-gray-300 rounded bg-gray-800 text-white"
-//       >
-//         {[10,  20, 30].map((option) => (
-//           <option key={option} value={option}>
-//             {option}
-//           </option>
-//         ))}
-//       </select>
-//     </div>
-  
-//     {/* Pagination information and buttons */}
-//     <div className="flex items-center gap-4">
-//       {/* Display the dynamic "show X of Y" */}
-//       <Typography variant="body2" color="gray">
-//         {`Showing ${indexOfFirstUser + 1}–${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length}`}
-//       </Typography>
-  
-//       {/* Pagination navigation buttons */}
-//       <div className="flex items-center gap-2">
-//         <Button
-//           disabled={currentPage === 1}
-//           onClick={() => paginate(currentPage - 1)}
-//         >
-//           Prev
-//         </Button>
-//         <Typography variant="body2" color="gray">{`Page ${currentPage}`}</Typography>
-//         <Button
-//           disabled={currentPage === Math.ceil(filteredUsers.length / usersPerPage)}
-//           onClick={() => paginate(currentPage + 1)}
-  
-//         >
-//           Next
-//         </Button>
-//       </div>
-//     </div>
-//   </div>
-  
-  
-//    {/* Add Category Dialog */}
-//    <Dialog open={openAdd} handler={setOpenAdd}>
-//           <DialogHeader>Add New Category</DialogHeader>
-//           <form onSubmit={(e) => e.preventDefault()}>
-//             <DialogBody>
-//               <div className="flex flex-col gap-4">
-//                 <Input
-//                   label="Category Name"
-//                   name="name"
-//                   value={newCategory.name}
-//                   onChange={handleAddCategoryInput}
-//                   required
-//                 />
-//                 <div className="relative">
-//                   <label className="text-sm font-semibold">Status</label>
-//                   <select
-//                     name="status"
-//                     value={newCategory.status}
-//                     onChange={handleAddCategoryInput}
-//                     className="w-full p-2 border border-gray-300 rounded bg-white"
-//                     required
-//                   >
-//                     <option value="active">Active</option>
-//                     <option value="inactive">Inactive</option>
-//                   </select>
-//                 </div>
-//               </div>
-//             </DialogBody>
-//             <DialogFooter>
-//               <Button variant="text" onClick={() => setOpenAdd(false)}>
-//                 Cancel
-//               </Button>
-//               <Button type="submit" variant="gradient" onClick={handleAddCategory}>
-//                 Add Category
-//               </Button>
-//             </DialogFooter>
-//           </form>
-//         </Dialog>
-  
-//         {/* Popup for editing user */}
-//         <Dialog open={open} handler={setOpen}>
-//           <DialogHeader>Edit User</DialogHeader>
-//           <form onSubmit={handleSubmit}>
-//             <DialogBody>
-//               <div className="flex flex-col gap-4">
-//                 <Input
-//                   label="Name"
-//                   name="name"
-//                   value={selectedUser?.name || ""}
-//                   onChange={handleChange}
-//                   required
-//                 />
-//                    {/* Dropdown for status */}
-//         <div className="relative">
-//           <label className="text-sm font-semibold">Status</label>
-//           <select
-//             name="status"
-//             value={selectedUser?.status || ""}
-//             onChange={handleChange}
-//             className="w-full p-2 border border-gray-300 rounded bg-white"
-//             required
-//           >
-//             <option value="" disabled>
-//               Select Status
-//             </option>
-//             <option value="active">Active</option>
-//             <option value="inactive">Inactive</option>
-//           </select>
-//         </div>
-  
-//                 {/* <Input
-//                   label="Status"
-//                   name="status"
-//                   value={selectedUser?.email || ""}
-//                   onChange={handleChange}
-//                   required
-//                 /> */}
-//               </div>
-//             </DialogBody>
-//             <DialogFooter>
-//               <Button variant="text" onClick={() => setOpen(false)}>
-//                 Cancel
-//               </Button>
-//               <Button type="submit" variant="gradient">
-//                 Save
-//               </Button>
-//             </DialogFooter>
-//           </form>
-//         </Dialog>
-  
-//         {/* Delete Confirmation Popup */}
-//         <Dialog open={openDelete} handler={setOpenDelete}>
-//           <DialogHeader>Confirm Deletion</DialogHeader>
-//           <DialogBody>
-//             Are you sure you want to delete this user? This action cannot be undone.
-//           </DialogBody>
-//           <DialogFooter>
-//             <Button variant="text" onClick={() => setOpenDelete(false)}>
-//               Cancel
-//             </Button>
-//             <Button color="red" onClick={handleDelete}>
-//               Delete
-//             </Button>
-//           </DialogFooter>
-//         </Dialog>
-//       </div>
-//     );
-//   }
-  
-//   export default ProfileQuestions;
+
 
 import {
     Card,
@@ -438,7 +14,7 @@ import {
   } from "@material-tailwind/react";
   import { useEffect, useState } from "react";
   import { fetchHandler } from "@/utils/Api";
-  import { GET_PROFILE_QUESTIONS, UPDATE_CATEGORIES, REMOVE_CATEGORIES, ADD_CATEGORIES } from "@/utils/Endpoint";
+  import { GET_PROFILE_QUESTIONS, UPDATE_CATEGORIES, REMOVE_CATEGORIES, ADD_CATEGORIES, UPDATE_PROFILE_QUESTIONS } from "@/utils/Endpoint";
   import toast from "react-hot-toast";
   import { useLoader } from "@/context/LoaderContext";
   import { formatTimestamp } from "@/utils/Functions";
@@ -448,6 +24,7 @@ import {
     const [profiles, setProfiles] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [open, setOpen] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [newProfile, setNewProfile] = useState({
@@ -455,6 +32,7 @@ import {
       content: [{ title: "", plan: [] }],
       status: "active", // Default status
     });
+    const [imagePreview, setImagePreview] = useState(null);
   
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -464,7 +42,9 @@ import {
     const getData = async () => {
       try {
         const response = await fetchHandler(GET_PROFILE_QUESTIONS, "", false, setLoader, "GET");
-        setProfiles(response?.data?.profiles || []);
+        console.log("response?.data",response?.data);
+        setProfiles(response?.data || []);
+
       } catch (error) {
         console.error("Error fetching profiles:", error);
       }
@@ -501,10 +81,10 @@ import {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const { category, content, status } = selectedProfile;
+        const { question, meta, options, status } = selectedProfile;
         const response = await fetchHandler(
-          UPDATE_CATEGORIES,
-          { id: selectedProfile._id, category, content, status },
+          UPDATE_PROFILE_QUESTIONS,
+          { id: selectedProfile._id,question, meta, options, status},
           true,
           setLoader,
           "PUT"
@@ -564,7 +144,7 @@ import {
         console.error("Error adding profile:", error);
         toast.error("Failed to add profile. Please try again.");
       } finally {
-        setOpen(false); // Close the dialog
+        setOpenAdd(false); // Close the dialog
         setLoader(false); // Hide loader after API call is complete
       }
     };
@@ -572,6 +152,57 @@ import {
     const handleAddProfileInput = (e) => {
       const { name, value } = e.target;
       setNewProfile((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleOptionChange = (index, field, value) => {
+      const updatedOptions = [...selectedProfile.options];
+      updatedOptions[index][field] = value;
+      setSelectedProfile((prev) => ({ ...prev, options: updatedOptions }));
+    };
+    
+    const handleAddOption = () => {
+      const newOption = {
+        id: `option-${selectedProfile.options.length + 1}`,
+        name: "",
+        image: "",
+        remark: "",
+      };
+      setSelectedProfile((prev) => ({
+        ...prev,
+        options: [...prev.options, newOption],
+      }));
+    };
+    
+    const handleRemoveOption = (index) => {
+      const updatedOptions = selectedProfile.options.filter((_, i) => i !== index);
+      setSelectedProfile((prev) => ({ ...prev, options: updatedOptions }));
+    };
+
+    const handleImageUpload = async (index, event) => {
+      const file = event.target.files[0]; // Get the selected file
+      if (file) {
+        try {
+          // Define compression options
+          const options = {
+            maxSizeMB: 1, // Maximum size in MB (adjust as needed)
+            maxWidthOrHeight: 800, // Maximum width or height
+            useWebWorker: true, // Use web worker for faster compression
+          };
+    
+          // Compress the image
+          const compressedFile = await imageCompression(file, options);
+    
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const compressedBase64 = e.target.result; // Compressed image in Base64
+            handleOptionChange(index, "image", compressedBase64); // Save the Base64 to the respective option
+          };
+    
+          reader.readAsDataURL(compressedFile); // Convert compressed file to Base64
+        } catch (error) {
+          console.error("Error compressing image:", error);
+        }
+      }
     };
   
     return (
@@ -595,8 +226,8 @@ import {
                   style={{ backgroundColor: "#1f2937" }}
                 />
                 {/* Add Profile Button */}
-                <Button size="sm" color="green" className="ml-4" onClick={() => setOpen(true)}>
-                  + Add Profile
+                <Button size="sm" color="green" className="ml-4" onClick={() => setOpenAdd(true)}>
+                  + Add Question{open}v
                 </Button>
               </div>
             </div>
@@ -606,7 +237,7 @@ import {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["Level", "Content Title", "Status", "Review", "Created At", "Actions"].map((el) => (
+                  {["S no.", "Question", "Meta", "Options", "Status", "Actions"].map((el) => (
                     <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                       <Typography
                         variant="small"
@@ -620,22 +251,23 @@ import {
               </thead>
               <tbody>
                 {currentProfiles.length > 0 ? (
-                  currentProfiles.map(({ _id, category, content, status, review, createdAt },index) => (
+                  currentProfiles.map(({ _id,question, meta, options, status },index) => (
                     <tr key={_id}>
                       <td className="py-3 px-5">{index+1}</td>
-                      <td className="py-3 px-5">{category}</td>
-                      <td className="py-3 px-5">{content[0]?.title}</td>
-                      <td className="py-3 px-5">{status}</td>
-                      <td className="py-3 px-5">{review}</td>
+                      <td className="py-3 px-5">{question}</td>
+                      <td className="py-3 px-5">{meta}</td>
+                      <td className="py-3 px-5">{options?.length}</td>
+                      <td className="py-3 px-5">{status || "Active"}</td>
+                      {/* <td className="py-3 px-5">{content[0]?.title}</td>
                       <td className="py-3 px-5">{formatTimestamp(createdAt)}</td>
                       <td className="py-3 px-5 flex gap-2">
-                        <Button size="sm" onClick={() => handleEdit({ _id, category, content, status, review, createdAt })}>
+                      </td> */}
+                        <Button size="sm" onClick={() => handleEdit({ _id,question, meta, options, status })}>
                           Edit
                         </Button>
                         <Button size="sm" color="red" onClick={() => confirmDelete(_id)}>
                           Delete
                         </Button>
-                      </td>
                     </tr>
                   ))
                 ) : (
@@ -651,7 +283,7 @@ import {
         </Card>
   
         {/* Add Profile Dialog */}
-        <Dialog open={open} handler={setOpen}>
+        <Dialog open={openAdd} handler={setOpenAdd}>
           <DialogHeader>Add New Profile</DialogHeader>
           <form onSubmit={(e) => e.preventDefault()}>
             <DialogBody>
@@ -686,7 +318,7 @@ import {
               </div>
             </DialogBody>
             <DialogFooter>
-              <Button variant="text" onClick={() => setOpen(false)}>
+              <Button variant="text" onClick={() => setOpenAdd(false)}>
                 Cancel
               </Button>
               <Button type="submit" variant="gradient" onClick={handleAddProfile}>
@@ -697,25 +329,26 @@ import {
         </Dialog>
   
         {/* Edit Profile Dialog */}
-        <Dialog open={open} handler={setOpen}>
+        {/* <Dialog open={open} handler={setOpen}>
           <DialogHeader>Edit Profile</DialogHeader>
           <form onSubmit={handleSubmit}>
             <DialogBody>
               <div className="flex flex-col gap-4">
                 <Input
-                  label="Category ID"
-                  name="category"
-                  value={selectedProfile?.category || ""}
+                  label="Question"
+                  name="question"
+                  value={selectedProfile?.question || ""}
                   onChange={handleChange}
                   required
                 />
                 <Input
-                  label="Content Title"
-                  name="content[0].title"
-                  value={selectedProfile?.content[0]?.title || ""}
+                  label="meta"
+                  name="meta"
+                  value={selectedProfile?.meta || ""}
                   onChange={handleChange}
                   required
                 />
+           
                 <div className="relative">
                   <label className="text-sm font-semibold">Status</label>
                   <select
@@ -741,7 +374,155 @@ import {
               </Button>
             </DialogFooter>
           </form>
-        </Dialog>
+        </Dialog> */}
+        {/* Edit Profile Dialog */}
+<Dialog open={open} handler={setOpen}  style={{ minWidth: '90vw' }}>
+  <DialogHeader>Edit Profile</DialogHeader>
+  <form onSubmit={handleSubmit}>
+    <DialogBody>
+      <div className="flex flex-col gap-4">
+        {/* Question Input */}
+        <Input
+          label="Question"
+          name="question"
+          value={selectedProfile?.question || ""}
+          onChange={handleChange}
+          required
+        />
+
+        {/* Meta Input */}
+        <Input
+          label="Meta"
+          name="meta"
+          value={selectedProfile?.meta || ""}
+          onChange={handleChange}
+          required
+        />
+
+  {/* Options Section */}
+{/* Options Section */}
+<div className="relative">
+  <label className="text-sm font-semibold mb-2 block">Options</label>
+  <div className="flex flex-col gap-4">
+    {selectedProfile?.options?.map((option, index) => (
+      <div
+        key={option.id}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center border p-4"
+      >
+        {/* Name Input */}
+        <div className="col-span-1">
+          <Input
+            label={`Option ${index + 1} Name`}
+            name={`option-name-${index}`}
+            value={option.name || ""}
+            onChange={(e) => handleOptionChange(index, "name", e.target.value)}
+            required
+          />
+        </div>
+
+        {/* Image Input */}
+        {/* <div className="col-span-">
+          <Input
+            type="text"
+            label={`Option ${index + 1} Image`}
+            name={`option-image-${index}`}
+            value={option.image || ""}
+            onChange={(e) => handleOptionChange(index, "image", e.target.value)}
+            required
+          />
+        </div> */}
+ 
+        <div className="col-span-1">
+  <label className="block text-sm font-medium text-gray-700 ">
+    {`Option ${index + 1} Image`}
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+    onChange={(e) => handleImageUpload(index, e)}
+  />
+
+  {/* Display the image if it exists */}
+  {imagePreview && (
+    <div className="mt-2">
+      <img
+        src={imagePreview} // Image preview URL
+        alt={`Option ${index + 1} preview`}
+        className="w-full h-auto mt-2 rounded"
+      />
+    </div>
+  )}
+</div>
+
+
+        {/* Remark Input */}
+        <div className="col-span-1">
+          <Input
+          readOnly
+            type="number"
+            label={`Option ${index + 1} Remark`}
+            name={`option-remark-${index}`}
+            value={option.remark || ""}
+            onChange={(e) => handleOptionChange(index, "remark", e.target.value)}
+          />
+        </div>
+
+        {/* Remove Option Button */}
+        <div className="col-span-1 text-center md:text-left">
+          <Button
+      
+            color="red"
+            onClick={() => handleRemoveOption(index)}
+          >
+            Remove
+          </Button>
+        </div>
+      </div>
+    ))}
+
+    {/* Add Option Button */}
+    <div className="mt-4">
+      <Button
+        variant="text"
+        color="blue"
+        onClick={handleAddOption}
+      >
+        Add Option
+      </Button>
+    </div>
+  </div>
+</div>
+
+        {/* Status Select */}
+        <div className="relative">
+          <label className="text-sm font-semibold">Status</label>
+          <select
+            name="status"
+            value={selectedProfile?.status || ""}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded bg-white"
+            required
+          >
+            <option value="" disabled>Select Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+    </DialogBody>
+    <DialogFooter>
+      <Button variant="text" onClick={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button type="submit" variant="gradient">
+        Save
+      </Button>
+    </DialogFooter>
+  </form>
+</Dialog>
+
   
         {/* Delete Confirmation Dialog */}
         <Dialog open={openDelete} handler={setOpenDelete}>
