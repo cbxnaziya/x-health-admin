@@ -132,13 +132,13 @@ import axios from "axios";
       <div className="mt-12 mb-8 flex flex-col gap-12">
         <Card>
           <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-            <div className="flex flex-col md:flex-row justify-between item-center">
+            <div className="flex flex-col sm:flex-row justify-between item-center">
               <Typography variant="h6" color="white">
                 Users Profile Table
               </Typography>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2">
                 <Typography variant="body2" color="white">
-                  Search:
+                  {/* Search: */}
                 </Typography>
                 <Input
                   type="text"
@@ -229,7 +229,7 @@ import axios from "axios";
         </Card>
   
   
-        <div className="flex justify-between items-center gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
           {/* Users per page dropdown */}
           <div className="flex items-center">
             <Typography variant="body2" color="gray">
@@ -250,7 +250,7 @@ import axios from "axios";
   
           {/* Pagination buttons */}
           {/* Pagination buttons */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             {/* Display the dynamic "show X of Y" */}
             <Typography variant="body2" color="gray">
               {`Showing ${indexOfFirstUser + 1}–${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length}`}
