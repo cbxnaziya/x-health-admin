@@ -354,7 +354,7 @@ export function Categories() {
 
       {/* Popup for editing user */}
       <Dialog open={open} handler={setOpen}>
-        <DialogHeader>Edit User</DialogHeader>
+        <DialogHeader>Edit Category</DialogHeader>
         <form onSubmit={handleSubmit}>
           <DialogBody>
             <div className="flex flex-col gap-4">

@@ -105,23 +105,24 @@ import axios from "axios";
     const handleDelete = async () => {
       try {
         const response = await fetchHandler(
-          USER_PROFILES_REMOVE,
-          { profile_id: selectedUser._id },
+          REMOVE_CATEGORIES,
+          { profile_id: selectedProfile._id },
           true,
           setLoader,
           "DELETE"
         );
         toast.success(response.data.message);
-        setUsers((prev) => prev.filter((user) => user._id !== selectedUser._id));
-        setOpenDelete(false);
+        setProfiles((prev) => prev.filter((profile) => profile._id !== selectedProfile._id));
       } catch (error) {
-        console.error("Error deleting user:", error);
-        toast.error("Failed to delete user. Please try again.");
+        console.error("Error deleting profile:", error);
+        toast.error("Failed to delete profile. Please try again.");
+      } finally {
+        setOpenDelete(false);
       }
     };
-  
-    const confirmDelete = (userId) => {
-      setSelectedUser({ _id: userId });
+
+    const confirmDelete = (profileId) => {
+      setSelectedProfile({ _id: profileId });
       setOpenDelete(true);
     };
   

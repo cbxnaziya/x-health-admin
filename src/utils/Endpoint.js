@@ -13,4 +13,5 @@ export const USER_PROFILES_UPDATE = "/api/profiles/update";
 export const USER_PROFILES_REMOVE = "/api/profiles/remove"; 
 export const GET_PROFILE_QUESTIONS = "/api/profiles-questions/all"; 
 export const UPDATE_PROFILE_QUESTIONS = "/api/profiles-questions/update"; 
+export const ADD_PROFILE_QUESTIONS = "/api/profiles-questions/add"; 
 export const GET_CONTENTS = "/api/contents"; 
