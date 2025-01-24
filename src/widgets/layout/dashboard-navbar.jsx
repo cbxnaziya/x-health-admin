@@ -83,7 +83,7 @@ export function DashboardNavbar() {
               {page}
             </Typography>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center  justify-between">
             {/* <div className="mr-auto md:mr-4 md:w-56">
               <Input label="Search" />
             </div> */}
@@ -99,7 +99,7 @@ export function DashboardNavbar() {
               <Button
                 variant="text"
                 color="blue-gray"
-                className="hidden items-center gap-1 px-4 xl:flex normal-case"
+                className=" items-center gap-1 px-4 xl:flex normal-case"
                 onClick={toggleModal}
               >
                 <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />

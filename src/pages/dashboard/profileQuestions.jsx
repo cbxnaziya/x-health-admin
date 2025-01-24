@@ -312,7 +312,7 @@ export default function ProfileQuestions() {
                     onChange={(e) => handleOptionChange(index, "name", e.target.value)}
                   />
                   <Input
-                  readOnly
+                  // readOnly
                     label="Remark"
                     value={option.remark}
                     onChange={(e) => handleOptionChange(index, "remark", e.target.value)}
@@ -373,7 +373,7 @@ export default function ProfileQuestions() {
                     onChange={(e) => handleOptionChange(index, "name", e.target.value)}
                   />
                   <Input
-                  readOnly
+                  // readOnly
                     label="Remark"
                     value={option.remark}
                     onChange={(e) => handleOptionChange(index, "remark", e.target.value)}
