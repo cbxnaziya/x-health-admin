@@ -38,6 +38,7 @@ export function Dashboard() {
           {routes.map(
             ({ layout, pages }) =>
               layout === "dashboard" &&
+              layout !== "auth" &&
               pages.map(({ path, element }) => (
                 <Route exact path={path} element={element} />
               ))

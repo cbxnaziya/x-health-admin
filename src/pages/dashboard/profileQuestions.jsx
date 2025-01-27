@@ -11,6 +11,7 @@ import {
   DialogFooter,
   Button,
   Input,
+  IconButton,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { fetchHandler } from "@/utils/Api";
@@ -244,7 +245,7 @@ export default function ProfileQuestions() {
           <table className="w-full table-auto">
             <thead>
               <tr>
-                {["S no.", "Question", "Meta", "Options", "Status", "Actions"].map((el) => (
+                {["S no.", "Question", "Question Description", "Options", "Status", "Actions"].map((el) => (
                   <th key={el} className="py-3 px-3 text-left border-b border-blue-gray-50">
                     <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
                       {el}
@@ -298,7 +299,7 @@ export default function ProfileQuestions() {
                 onChange={(e) => setSelectedProfile({ ...selectedProfile, question: e.target.value })}
               />
               <Input
-                label="Meta"
+                label="Question Description"
                 name="meta"
                 value={selectedProfile?.meta || ""}
                 onChange={(e) => setSelectedProfile({ ...selectedProfile, meta: e.target.value })}
@@ -359,7 +360,7 @@ export default function ProfileQuestions() {
                 onChange={(e) => setSelectedProfile({ ...selectedProfile, question: e.target.value })}
               />
               <Input
-                label="Meta"
+                label="Question Description"
                 name="meta"
                 value={selectedProfile?.meta || ""}
                 onChange={(e) => setSelectedProfile({ ...selectedProfile, meta: e.target.value })}
@@ -379,13 +380,29 @@ export default function ProfileQuestions() {
                     onChange={(e) => handleOptionChange(index, "remark", e.target.value)}
                   />
                   <Input type="file" onChange={(e) => handleFileChange(index, e)} />
-                  {option.image && (
+                    <>
+                    <div className="relative">
+
                     <img
-                      src={typeof option.image === "string" ? option.image : ""}
+                      src={option.image != "" ? option.image : "/img/placeholder_image.png"}
                       alt={`Option ${index + 1}`}
-                      className="h-12 w-12 rounded-md border"
-                    />
-                  )}
+                      className="h-12 w-12 rounded-md border w-32"
+                      />
+                      { 
+                      option.image 
+                      && (
+                    <div 
+                    className="absolute top-0 right-0 bg-gray-900 text-white  rounded-full w-5 text-center" 
+                    onClick={(e)=>{ handleOptionChange(index, "image", "")}
+                  }
+                  
+                  >
+                      x
+                    </div>
+                    )}
+                        </div>
+                   
+                      </>
                   <Button size="sm" color="red" onClick={() => handleRemoveOption(index)}>
                     Remove
                   </Button>

@@ -42,7 +42,7 @@ export function Footer({ brandName, brandLink, routes }) {
 
 Footer.defaultProps = {
   brandName: "Cyberx",  
-  // brandLink: "https://www.test.com",
+  brandLink: "https://www.cyberxinfosystem.com/",
   routes: [
     // { name: "Creative Tim", path: "https://www.creative-tim.com" },
     { name: "About Us", path: "#" },

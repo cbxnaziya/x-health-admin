@@ -62,7 +62,10 @@ export function DashboardNavbar() {
                 fixedNavbar ? "mt-1" : ""
               }`}
             >
-              <Link to={`/${layout}`}>
+              <Link
+               to={`/`}
+              //  to={`/${layout}`}
+              >
                 <Typography
                   variant="small"
                   color="blue-gray"
