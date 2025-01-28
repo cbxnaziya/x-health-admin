@@ -36,10 +36,10 @@ export function Auth() {
     <div className="relative min-h-screen w-full">
       <Routes>
         {routes
-        .filter((route)=> route.layout !== "auth")
+        // .filter((route)=> route.layout !== "auth")
         .map(
           ({ layout, pages }) =>
-            // layout === "auth" &&
+            layout === "auth" &&
             pages.map(({ path, element }) => (
               <Route exact path={path} element={element} />
             ))
