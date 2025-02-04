@@ -52,16 +52,16 @@ export const routes = [
       //   element: <Notifications />,
       // },
       {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "Categories",
-        path: "/categories",
-        element: <Categories />,
-      },
-      {
         icon: <TableCellsIcon {...icon} />,
         name: "Profile Questions",
         path: "/Profile-questions",
         element: <ProfileQuestions />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "Categories",
+        path: "/categories",
+        element: <Categories />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
