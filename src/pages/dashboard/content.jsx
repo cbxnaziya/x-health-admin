@@ -338,36 +338,7 @@ export function Content() {
             </select>
             </div>
 
-            {/* Category (if needed) */}
-            {/* <Input
-            label="Category"
-            name="category"
-            value={selectedProfile?.category || ""}
-            onChange={handleChange}
-            required
-            /> */}
-
-            {/* Content (subfields like title and plans) */}
-            {/* {selectedProfile?.content?.map((contentItem, idx) => (
-            <div key={idx} className="flex flex-col gap-2 border p-2">
-         
-                Day {idx+1}
-                <Input
-                label={`Title ${idx + 1}`}
-                name={`title_${idx}`}
-                value={contentItem?.title || ""}
-                onChange={(e) => handleContentChange(e, idx)}
-                required
-                />
-             
-                <Input
-                label={`Plan ${idx + 1}`}
-                name={`plan_${idx}`}
-                value={contentItem?.plan?.join(", ") || ""}
-                onChange={(e) => handleContentChange(e, idx, 'plan')}
-                />
-            </div>
-            ))} */}
+          
 
 <div className="flex flex-col gap-2">
       {selectedProfile?.content?.map((contentItem, dayIdx) => (
